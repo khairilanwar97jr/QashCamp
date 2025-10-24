@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
 
 export default function Booking() {
@@ -70,6 +71,15 @@ export default function Booking() {
             placeholder="Where to Camp"
             className="border p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-green-400"
           />
+
+<Link to="/AddOn">
+  <button
+    type="button"
+    className="bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-md transition w-full"
+  >
+    Choose Add-On
+  </button>
+</Link>
 
           {/* Submit Button */}
           <button

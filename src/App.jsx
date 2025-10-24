@@ -3,6 +3,7 @@ import "./index.css";
 import { Link } from "react-router-dom";
 import Banner from "./components/Banner";
 
+
 export default function App() {
     const bookings = [
     { name: "Ali Bin Ahmad", startDate: "2025-10-20", endDate: "2025-10-22", location: "Taman Negara" },
