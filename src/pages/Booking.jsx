@@ -1,26 +1,85 @@
-import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
+
 import Navbar from "../components/Navbar";
+import AddOnModal from "../components/AddOnModal";
+import TermsModal from "../components/TermsModal";
+
+import packageAImg from "../assets/packageA.jpg";
+import packageBImg from "../assets/packageB.jpg";
+
+import ZoomOnHover from "../components/ZoomOnHover"; // import the new component
+
 
 export default function Booking() {
+  const location = useLocation();
+  const selectedPackage = location.state?.package; // "A" or "B"
+  const packageImg =
+    selectedPackage === "A" ? packageAImg : selectedPackage === "B" ? packageBImg : null;
+
+  const [showModal, setShowModal] = useState(false);
+  const [selectedAddOns, setSelectedAddOns] = useState([]);
+  const [showTerms, setShowTerms] = useState(false);
+  const [agreed, setAgreed] = useState(false);
+
+
+
+  useEffect(() => {
+    window.scrollTo(0, 0); // Scroll to top when component mounts
+  }, []);
+
+  // Callback from Add-On modal
+  const handleSaveAddOns = (addons) => {
+    setSelectedAddOns(addons);
+    setShowModal(false);
+  };
+
+  // Handle form submission
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!agreed) return;
+    console.log("Booking submitted:", { selectedAddOns, agreed, selectedPackage });
+    alert("Booking submitted successfully!");
+  };
+
   return (
     <>
       <Navbar />
-      <div className="min-h-screen flex flex-col justify-center items-center bg-gradient-to-b from-green-100 to-green-200 text-gray-800">
-        <h1 className="text-4xl font-bold mb-4">📝 Book Your Camping Package</h1>
-        <p className="text-lg mb-6">Please fill in your details below.</p>
 
-        <form className="bg-white shadow-lg rounded-xl p-8 w-96 flex flex-col gap-4">
+
+
+
+      {/* Full-width Header Section */}
+      <div className="w-full bg-green-50/80 backdrop-blur-md py-12 mb-8 flex flex-col items-center shadow-md">
+        <h1 className="text-5xl md:text-6xl font-extrabold text-green-700 mb-4 drop-shadow-md">
+          📝 Book Your Camping Package
+        </h1>
+        <p className="text-lg md:text-xl text-gray-700 max-w-2xl text-center px-4">
+          Please fill in your details below and get ready for an amazing adventure!
+        </p>
+      </div>
+      <div className="min-h-screen bg-gradient-to-b from-green-100 to-green-200 text-gray-800 py-10 flex justify-center items-start gap-10 px-4">
+
+
+
+        {/* Booking Form */}
+        <form
+          className="bg-white shadow-lg rounded-xl p-8 w-full max-w-md flex flex-col gap-4"
+          onSubmit={handleSubmit}
+        >
           {/* First & Last Name */}
           <div className="flex gap-2">
             <input
               type="text"
               placeholder="First Name"
               className="border p-2 w-1/2 rounded-md focus:outline-none focus:ring-2 focus:ring-green-400"
+              required
             />
             <input
               type="text"
               placeholder="Last Name"
               className="border p-2 w-1/2 rounded-md focus:outline-none focus:ring-2 focus:ring-green-400"
+              required
             />
           </div>
 
@@ -30,6 +89,7 @@ export default function Booking() {
               type="text"
               placeholder="Address Line 1"
               className="border p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-green-400"
+              required
             />
             <input
               type="text"
@@ -43,11 +103,26 @@ export default function Booking() {
             />
           </div>
 
+          {/* Contact Info */}
+          <input
+            type="text"
+            placeholder="Phone Number"
+            required
+            className="border p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-green-400"
+          />
+          <input
+            type="email"
+            placeholder="Email Address"
+            required
+            className="border p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-green-400"
+          />
+
           {/* ID Number */}
           <input
             type="text"
             placeholder="ID Number"
             className="border p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-green-400"
+            required
           />
 
           {/* Date Range */}
@@ -57,10 +132,12 @@ export default function Booking() {
               <input
                 type="date"
                 className="border p-2 w-1/2 rounded-md focus:outline-none focus:ring-2 focus:ring-green-400"
+                required
               />
               <input
                 type="date"
                 className="border p-2 w-1/2 rounded-md focus:outline-none focus:ring-2 focus:ring-green-400"
+                required
               />
             </div>
           </div>
@@ -70,26 +147,92 @@ export default function Booking() {
             type="text"
             placeholder="Where to Camp"
             className="border p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-green-400"
+            required
           />
 
-<Link to="/AddOn">
-  <button
-    type="button"
-    className="bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-md transition w-full"
-  >
-    Choose Add-On
-  </button>
-</Link>
+          {/* Add-On Button */}
+          <button
+            type="button"
+            onClick={() => setShowModal(true)}
+            className="bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-md transition w-full"
+          >
+            Choose Add-On
+          </button>
+
+          {/* Selected Add-Ons Summary */}
+          {selectedAddOns.length > 0 && (
+            <div className="bg-green-50 p-3 rounded-md text-sm">
+              <div className="flex justify-between items-center mb-1">
+                <p className="font-semibold">Selected Add-Ons:</p>
+                <button
+                  type="button"
+                  onClick={() => setShowModal(true)}
+                  className="text-blue-600 hover:underline text-sm"
+                >
+                  Edit
+                </button>
+              </div>
+              <ul className="list-disc pl-5">
+                {selectedAddOns.map((a) => (
+                  <li key={a.id}>
+                    {a.name} (RM{a.price})
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {/* Terms & Conditions */}
+          <div className="flex items-center gap-2 mt-2">
+            <input
+              type="checkbox"
+              checked={agreed}
+              onChange={() => setAgreed(!agreed)}
+              id="agree"
+              className="w-4 h-4 accent-green-600"
+              required
+            />
+            <label htmlFor="agree" className="text-sm text-gray-700">
+              I agree to the
+              <button
+                type="button"
+                onClick={() => setShowTerms(true)}
+                className="text-blue-600 hover:underline ml-1"
+              >
+                Terms & Conditions
+              </button>
+            </label>
+          </div>
 
           {/* Submit Button */}
           <button
             type="submit"
-            className="bg-green-600 hover:bg-green-700 text-white py-2 rounded-md transition"
+            disabled={!agreed}
+            className={`bg-green-600 hover:bg-green-700 text-white py-2 rounded-md transition ${!agreed ? "opacity-50 cursor-not-allowed" : ""
+              }`}
           >
             Submit Booking
           </button>
         </form>
+
+          {/* Left: Package Image */}
+  {packageImg && <ZoomOnHover src={packageImg} width={500} height={300} />}
       </div>
+
+
+
+      {/* Add-On Modal */}
+      {showModal && (
+        <AddOnModal
+          selected={selectedAddOns}
+          onClose={() => setShowModal(false)}
+          onSave={handleSaveAddOns}
+        />
+      )}
+
+      {/* Terms & Conditions Modal */}
+      {showTerms && <TermsModal onClose={() => setShowTerms(false)} />}
+
     </>
   );
 }

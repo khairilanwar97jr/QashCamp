@@ -2,6 +2,8 @@ import Navbar from "./components/Navbar";
 import "./index.css";
 import { Link } from "react-router-dom";
 import Banner from "./components/Banner";
+import packageAImg from "./assets/packageA.jpg";
+import packageBImg from "./assets/packageB.jpg";
 
 
 export default function App() {
@@ -19,7 +21,7 @@ export default function App() {
       {/* other content like your packages and booking table */}
     </div>
       {/* Hero Section */}
-      <div className="text-center mt-10 px-4">
+      <div id="hero"className="text-center mt-10 px-4">
         <h1 className="text-5xl font-bold text-red-500">Welcome to Kaiso Camp 🏕️</h1>
         <p className="mt-4 text-lg text-gray-700">
           Your next adventure starts here.
@@ -27,33 +29,66 @@ export default function App() {
       </div>
 
       {/* Packages Section */}
-      <section className="mt-16 px-6 flex flex-col md:flex-row justify-center items-center gap-8">
+      <section id="packages" className="mt-16 px-6 flex flex-col md:flex-row justify-center items-center gap-8">
         {/* Package A */}
-        <div className="bg-white shadow-lg rounded-2xl p-6 w-80 text-center">
-          <h2 className="text-xl font-semibold mb-2">🏕️ Package A</h2>
-          <p className="text-gray-600 mb-4">Not available</p>
-          <button className="bg-gray-400 text-white px-4 py-2 rounded-lg cursor-not-allowed">
-            Unavailable
-          </button>
-        </div>
+<div className="relative w-[500px] h-[500px] rounded-2xl overflow-hidden shadow-lg filter grayscale" style={{ backgroundImage: `url(${packageAImg})`, backgroundSize: "cover",      // fill the div completely
+    backgroundPosition: "center", // center the main part of the image
+    backgroundRepeat: "no-repeat" }}>
+  {/* Background Image */}
 
-        {/* Package B */}
-        <div className="bg-white shadow-lg rounded-2xl p-6 w-80 text-center">
-          <h2 className="text-xl font-semibold mb-2">🔥 Package B</h2>
-          <p className="text-gray-600 mb-2">Available</p>
-          <p className="text-gray-700 mb-4">
-            Tent size: 210cm x 320cm<br />Height: 180cm
-          </p>
-          <div className="space-y-2">
-            <p>RM110 - 2 days 1 night</p>
-            <p>RM150 - 3 days 2 nights</p>
-          </div>
-          <Link to="/booking">
-            <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg mt-4">
-              Book Now
-            </button>
-          </Link>
-        </div>
+  {/* Overlay for readability */}
+  <div className="absolute inset-0 bg-black bg-opacity-25"></div>
+
+  {/* Content */}
+  <div className="relative z-10 p-6 text-center text-white flex flex-col justify-between h-full">
+    <div>
+      <h2 className="text-xl font-semibold mb-2">🔥 Package A</h2>
+      <p className="mb-2">Unavailable</p>
+      <p className="mb-4">
+        Tent size: 200cm x 205cm<br />Height: 135cm
+      </p>
+      <div className="space-y-2">
+        <p>RM50 - 2 days 1 night</p>
+        <p>RM80 - 3 days 2 nights</p>
+      </div>
+    </div>
+
+    <button className="bg-gray-400 text-white px-4 py-2 rounded-lg cursor-not-allowed mt-4">
+      Unavailable
+    </button>
+  </div>
+</div>
+
+{/* Package B */}
+<div className="relative w-[500px] h-[500px] rounded-2xl overflow-hidden shadow-lg"  style={{ backgroundImage: `url(${packageBImg})`,  backgroundSize: "cover",      // fill the div completely
+    backgroundPosition: "center", // center the main part of the image
+    backgroundRepeat: "no-repeat"}}>
+  {/* Background Image */}
+
+  {/* Overlay for darkening so text is readable */}
+  <div className="absolute inset-0 bg-black bg-opacity-30"></div>
+
+  {/* Content */}
+  <div className="relative z-10 p-6 text-center text-white flex flex-col justify-between h-full">
+    <div>
+      <h2 className="text-xl font-semibold mb-2">🔥 Package B</h2>
+      <p className="mb-2">Available</p>
+      <p className="mb-4">
+        Tent size: 210cm x 320cm<br />Height: 180cm
+      </p>
+      <div className="space-y-2">
+        <p>RM110 - 2 days 1 night</p>
+        <p>RM150 - 3 days 2 nights</p>
+      </div>
+    </div>
+
+    <Link to="/booking" state={{ package: "B" }}>
+      <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg mt-4">
+        Book Now
+      </button>
+    </Link>
+  </div>
+</div>
       </section>
       
            {/* Booking Details Table */}
