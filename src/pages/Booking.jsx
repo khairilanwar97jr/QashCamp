@@ -62,7 +62,7 @@ export default function Booking() {
 
 
 
-        {/* Booking Form */}
+        {/* Left : Booking Form */}
         <form
           className="bg-white shadow-lg rounded-xl p-8 w-full max-w-md flex flex-col gap-4"
           onSubmit={handleSubmit}
@@ -182,41 +182,77 @@ export default function Booking() {
             </div>
           )}
 
-          {/* Terms & Conditions */}
-          <div className="flex items-center gap-2 mt-2">
-            <input
-              type="checkbox"
-              checked={agreed}
-              onChange={() => setAgreed(!agreed)}
-              id="agree"
-              className="w-4 h-4 accent-green-600"
-              required
-            />
-            <label htmlFor="agree" className="text-sm text-gray-700">
-              I agree to the
-              <button
-                type="button"
-                onClick={() => setShowTerms(true)}
-                className="text-blue-600 hover:underline ml-1"
-              >
-                Terms & Conditions
-              </button>
-            </label>
-          </div>
 
-          {/* Submit Button */}
-          <button
-            type="submit"
-            disabled={!agreed}
-            className={`bg-green-600 hover:bg-green-700 text-white py-2 rounded-md transition ${!agreed ? "opacity-50 cursor-not-allowed" : ""
-              }`}
-          >
-            Submit Booking
-          </button>
         </form>
 
-          {/* Left: Package Image */}
-  {packageImg && <ZoomOnHover src={packageImg} width={500} height={300} />}
+        {/* right: Package Image */}
+        <div className="flex flex-col gap-4">
+          {/* Package Image */}
+          {packageImg && <ZoomOnHover src={packageImg} width={500} height={300} />}
+
+          {/* Summary under the image */}
+          <div className="bg-white shadow-lg rounded-xl p-4 w-[500px]">
+            <h2 className="text-lg font-semibold mb-2">🛒 Booking Summary</h2>
+
+            {/* Package Info */}
+            <p className="font-medium">Package: {selectedPackage === "A" ? "Package A" : "Package B"}</p>
+            <p>Price (1 day): RM110</p>
+
+            {/* Add-Ons */}
+            {selectedAddOns.length > 0 ? (
+              <div className="mt-2">
+                <p className="font-medium">Add-Ons:</p>
+                <ul className="list-disc pl-5">
+                  {selectedAddOns.map((a) => (
+                    <li key={a.id}>
+                      {a.name} (RM{a.price})
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ) : (
+              <p className="mt-2 text-gray-500 text-sm">No add-ons selected</p>
+            )}
+
+            {/* Total Price */}
+            <div className="mt-4 border-t pt-2 font-semibold">
+              Total: RM{110 + selectedAddOns.reduce((sum, a) => sum + a.price, 0)}
+            </div>
+            {/* Terms & Submit Row */}
+            <div className="flex items-center justify-between mt-2">
+              {/* Checkbox */}
+              <div className="flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  checked={agreed}
+                  onChange={() => setAgreed(!agreed)}
+                  id="agree"
+                  className="w-4 h-4 accent-green-600"
+                  required
+                />
+                <label htmlFor="agree" className="text-sm text-gray-700">
+                  I agree to the
+                  <button
+                    type="button"
+                    onClick={() => setShowTerms(true)}
+                    className="text-blue-600 hover:underline ml-1"
+                  >
+                    Terms & Conditions
+                  </button>
+                </label>
+              </div>
+
+              {/* Submit Button on the same line */}
+              <button
+                type="submit"
+                disabled={!agreed}
+                className={`bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-md transition ${!agreed ? "opacity-50 cursor-not-allowed" : ""}`}
+              >
+                Submit Booking
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
 
 
